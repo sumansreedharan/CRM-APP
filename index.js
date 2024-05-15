@@ -5,7 +5,7 @@ const authRoutes = require("./Routes/authRoute");
 require("dotenv").config();
 const app = express();
 app.use(bodyParser.json());
-app.use("/auth", authRoutes);
+app.use("/", authRoutes);
 const PORT = process.env.SERVER_PORT;
 const server = http.createServer(app);
 server.listen(PORT, (req, res) => {

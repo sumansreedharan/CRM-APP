@@ -1,20 +1,23 @@
 // userModel.js
 
-const pool = require('../db');
+const connection = require('../db');
 
 const User = {};
 
-User.createUser = (userData, callback) => {
-  pool.query('INSERT INTO users SET ?', userData, (err, result) => {
-    if (err) {
-      return callback(err, null);
-    }
-    return callback(null, result);
+User.createUser = (userData) => {
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO users SET ?', userData, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
   });
 };
 
 User.getUserByEmail = (email, callback) => {
-  pool.query('SELECT * FROM users WHERE email = ?', email, (err, results) => {
+  connection.query('SELECT * FROM users WHERE email = ?', email, (err, results) => {
     if (err) {
       return callback(err, null);
     }

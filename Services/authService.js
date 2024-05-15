@@ -14,6 +14,7 @@ authService.signup = (userData, callback) => {
       return callback(err, null);
     }
     const newUser = { ...userData, password: hash };
+
     userModel.createUser(newUser, callback);
   });
 };
