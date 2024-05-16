@@ -34,7 +34,7 @@ adminService.createUser = async (userData) => {
     await userModel.createUser(newUser);
     return { message: 'User created successfully' };
   } catch (error) {
-    console.error(error);
+    console.log(error.message);
     throw new Error('Failed to create user');
   }
 };

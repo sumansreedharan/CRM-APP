@@ -34,7 +34,7 @@ authService.login = (email, password, callback) => {
         return callback(null, { message: "Invalid email or password" });
       }
       // Generate JWT token
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
+      const token = jwt.sign({ userId: user.id,role_id: user.role_id }, process.env.JWT_SECRET_KEY, {
         expiresIn: "1h",
       });
       return callback(null, { token });
