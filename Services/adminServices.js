@@ -1,41 +1,41 @@
-const bcrypt = require('bcrypt');
-const userModel = require('../Models/userModel');
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const userModel = require("../Models/userModel");
+const sendEmailPassword = require('../Utils/sendEmailPassword')
 
-const adminService = {}
+const adminService = {};
 
-adminService.createAdmin = async (userData) => {
+adminService.createUserWithRole = async (userData, roleId) => {
   try {
-    const { name, email, password } = userData;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newAdmin = {
-      name,
-      email,
-      password: hashedPassword,
-      role_id: 2 // Assigning roleId for admin
-    };
-    await userModel.createUser(newAdmin);
-    return { message: 'Admin created successfully' };
-  } catch (error) {
-    console.error(error);
-    throw new Error('Failed to create admin');
-  }
-};
-
-adminService.createUser = async (userData) => {
-  try {
-    const { name, email, password } = userData;
+    const { name, email } = userData;
+    const password = crypto.randomBytes(8).toString("hex"); // Generate a random 8-byte (16 characters) password
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
       name,
       email,
       password: hashedPassword,
-      role_id: 3 // Assigning roleId for user
+      role_id: roleId, // Assigning roleId based on input
     };
     await userModel.createUser(newUser);
-    return { message: 'User created successfully' };
+
+    let role;
+    switch (roleId) {
+      case 2:
+        role = "Admin";
+        break;
+      case 3:
+        role = "User";
+        break;
+      default:
+        throw new Error("Invalid role ID");
+    }
+    console.log(email,password,"oooooo");
+    await sendEmailPassword(email, password);
+    console.log("Password email sent successfully");
+    return { message: `${role} created successfully`, password };
   } catch (error) {
-    console.log(error.message);
-    throw new Error('Failed to create user');
+    console.error(error);
+    throw new Error("Failed to create user");
   }
 };
 
