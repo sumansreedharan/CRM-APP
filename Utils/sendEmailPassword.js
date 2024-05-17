@@ -4,8 +4,8 @@ console.log(process.env.VERIFY_EMAIL);
 console.log(process.env.PASSWORD_KEY);
 const transporter = nodemailer.createTransport({
   host:"smtp.gmail.com",
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.VERIFY_EMAIL,
     pass: process.env.PASSWORD_KEY,

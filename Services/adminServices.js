@@ -8,7 +8,7 @@ const adminService = {};
 adminService.createUserWithRole = async (userData, roleId) => {
   try {
     const { name, email } = userData;
-    const password = crypto.randomBytes(8).toString("hex"); // Generate a random 8-byte (16 characters) password
+    const password = crypto.randomBytes(8).toString("hex"); 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
       name,
